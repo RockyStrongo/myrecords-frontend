@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
     providers: [
         CredentialsProvider({
@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials, req) {
                 try {
 
-                    const authResponse = await fetch(`${process.env.API_HOST}/login`, {
+                    const authResponse = await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/login`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -38,20 +38,10 @@ export const authOptions: NextAuthOptions = {
         })
     ],
 
-    // session: {
-    //     strategy: "jwt",
-    //     maxAge: 60 * 3 * 60 + 60 * 20 //3h + 20min (same as backend API expiry - as of now, did not manage to get it from the token here),
-    // },
-
-    // callbacks: {
-    //     async jwt({ token, user }) {
-    //         return { ...token, ...user }
-    //     },
-    //     async session({ session, token, user }) {
-    //         session.user = token as any
-    //         return session
-    //     },
-    // },
+    session: {
+        strategy: "jwt",
+        maxAge: 60 * 60   //1h
+    },
 
     //custom login page
     pages: {
